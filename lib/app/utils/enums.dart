@@ -97,3 +97,5 @@ enum PageTransitionType {
 
   bottomToTopPop,
 }
+
+enum AuthStatus { initial, loading, authenticated, error }

@@ -2,39 +2,49 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:remittance/app/config/extensions/them_extention.dart';
 import 'package:remittance/app/config/route/routes.gr.dart';
 import 'package:remittance/app/thems/app_buttons_styles.dart';
 import 'package:remittance/app/thems/colors.dart';
 import 'package:remittance/app/thems/size_config.dart';
 import 'package:remittance/app/utils/auth.dart';
+import 'package:remittance/app/utils/enums.dart';
 import 'package:remittance/app/utils/helper_methods.dart';
+import 'package:remittance/presentation/riverpod/user/authState.dart';
+import 'package:remittance/presentation/riverpod/user/userRepository.dart';
 import 'package:remittance/presentation/widgets/app_bar.dart';
 import 'package:remittance/presentation/widgets/input_field.dart';
 import 'package:remittance/presentation/widgets/text_widget.dart';
 import 'package:remittance/presentation/widgets/visibility_toggle.dart';
 
 @RoutePage()
-class LoginScreen extends StatefulWidget {
+// class LoginScreen extends StatefulWidget {
+//   const LoginScreen({super.key});
+//
+//   @override
+//   State<LoginScreen> createState() => _LoginScreenState();
+// }
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  final _phoneNumberFormKey = GlobalKey<FormState>();
-  final __pINFormKey = GlobalKey<FormState>();
-  final _phoneNumberController = TextEditingController();
-  final _pINController = TextEditingController();
-  bool showPIN = true;
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final __emailFormKey = GlobalKey<FormState>();
+  final _passwordFormKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool _showPassword = true;
 
   @override
   void initState() {
     super.initState();
     if (kDebugMode) {
-      _phoneNumberController.text="0946555036";
-      _pINController.text = "123456";
+      _emailController.text="bele@gmail.com";
+      _passwordController.text = "Abcd@1234";
     }
   }
 
@@ -84,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     _phoneNumberWidget(),
                     SizedBox(height: MySize.size10,),
                     TextWidgetText.textWidget(
-                      text: "PIN",
+                      text: "Password",
                       themeData: context.themeData.textTheme.displaySmall!,
                       fontSize: MySize.size18,
                       fontWeight: 400,
@@ -119,59 +129,55 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _phoneNumberWidget() {
     return Form(
-      key: _phoneNumberFormKey,
+      key: __emailFormKey,
       child: InputTextFormField(
-        controller: _phoneNumberController,
+        controller: _emailController,
         isBordered: true,
         readOnly: false,
         textAlign: TextAlign.start,
         validator: (values) {
           if (values == null || values.isEmpty) {
-            return 'Phone Number Is Required';
-          } else if (!isPhoneNumber(values)) {
-            return "Enter Valid Phone Number";
+            return 'Email Is Required';
+          } else if (!isEmail(values)) {
+            return "Enter valid email address";
           }
           return null;
         },
-        keyboardType: TextInputType.number,
+        keyboardType: TextInputType.emailAddress,
         onChanged: (values) {
-          _validateFormKey(_phoneNumberFormKey);
+          _validateFormKey(__emailFormKey);
         },
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp(r'\d')),
-        ],
-        hintText: "Phone Number",
+        hintText: "Email",
       ),
     );
   }
 
   Widget _pINWidget() {
     return Form(
-      key: __pINFormKey,
+      key: _passwordFormKey,
       child: InputTextFormField(
-        controller: _pINController,
+        controller: _passwordController,
         readOnly: false,
         isBordered: true,
-        obscureText: showPIN,
+        obscureText: _showPassword,
         textAlign: TextAlign.start,
-        maxLength: 6,
         validator: (values) {
-          if (values == null || values.isEmpty) return 'PIN Required';
-          if(values.length<6) return "PIN Is To Short";
-          // return validatePassword(values);
-          return null;
+          if (values == null || values.isEmpty) {
+            return 'Password is required';
+          }
+          return validatePassword(values);
         },
         onChanged: (values) {
-          _validateFormKey(__pINFormKey);
+          _validateFormKey(_passwordFormKey);
         },
-        hintText: "PIN",
+        hintText: "Password",
         suffixIcon: VisibilityToggle(
           onToggle: () {
             setState(() {
-              showPIN = !showPIN;
+              _showPassword = !_showPassword;
             });
           },
-          isVisible: showPIN,
+          isVisible: _showPassword,
         ),
       ),
     );
@@ -205,9 +211,31 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _joinNowButton() {
+    final isLoading = ref.watch(authNotifierProvider).status == AuthStatus.loading;
     return TextButton(
         style: AppButtonStyles.darkRoundedBorderButton,
-        child: Text(
+      onPressed: isLoading
+          ? null
+          : () async {
+        if (_validateFormKey(__emailFormKey) && _validateFormKey(_passwordFormKey)) {
+          final email = _emailController.text;
+          await ref.read(authNotifierProvider.notifier).login(email,_passwordController.text);
+          final authState = ref.read(authNotifierProvider);
+          if (authState.status == AuthStatus.authenticated) {
+            context.router.replace(HomeRoute());
+          } else if (authState.status == AuthStatus.error) {
+            if (mounted) {
+              showAnimatedSnackBar(
+                message:authState.errorMessage ?? 'Login failed',
+                context: context,
+                showCloseIcon: true,
+              );
+            }
+          }
+        }
+      },
+        child:isLoading
+            ? const CircularProgressIndicator(): Text(
           "Login",
           style: TextWidgetText.textWidgetStyle(
             themeData: context.themeData.textTheme.headlineSmall!,
@@ -216,11 +244,7 @@ class _LoginScreenState extends State<LoginScreen> {
             color: AppColors.darkRoundedButtonColor,
           ),
         ),
-        onPressed: () async {
-          if (_validateFormKey(_phoneNumberFormKey) && _validateFormKey(__pINFormKey)) {
-            context.router.replace(HomeRoute());
-          }
-        });
+    );
   }
 
   Widget _registerButton() {

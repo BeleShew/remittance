@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:remittance/app/config/route/routes.dart';
 import 'package:remittance/app/thems/size_config.dart';
 import 'package:remittance/app/thems/thems.dart';
@@ -8,7 +9,7 @@ import 'package:remittance/app/utils/dependencies.dart';
 void main() {
  WidgetsFlutterBinding.ensureInitialized();
   Dependencies.init();
-  runApp(MyApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

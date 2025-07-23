@@ -5,8 +5,8 @@ import 'package:remittance/app/utils/keys.dart';
 @lazySingleton
 class RemoteAccessTokenDataSources{
   static const _storage = FlutterSecureStorage();
-   Future setAccessToken(String value) async => await _storage.write(key: Keys.accessToken, value: value);
-   Future<String?> getAccessToken() async => await _storage.read(key: Keys.accessToken);
+   Future setAccessToken(String value) async => await _storage.write(key: Keys.baseURL, value: value);
+   Future<String?> getAccessToken() async => await _storage.read(key: Keys.baseURL);
   Future updateAccessToken(String email,String password) async {
     /* get remote access token and update the local */
     // await _loginRepository.login(LoginRequest("admin", "123456"));
