@@ -45,6 +45,9 @@ bool hasMatch(String? value, String pattern) {
   return (value == null) ? false : RegExp(pattern).hasMatch(value);
 }
 
+bool validateCurrentFormKey(GlobalKey<FormState> formKey) {
+  return formKey.currentState!.validate();
+}
 
 String getGreeting() {
   final now = DateTime.now();

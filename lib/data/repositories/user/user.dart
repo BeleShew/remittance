@@ -11,12 +11,12 @@ class UserRepositoryImpl extends UserRepository{
   UserRepositoryImpl(this._remoteUserDataSources);
 
   @override
-  Future<LoginResponse> login(String email) {
+  Future<LoginResponse?> login(String email) {
    return _remoteUserDataSources.login(email);
   }
 
   @override
-  Future<OperationalResult?> registerUser(RegisterUser user) {
+  Future<RegisterUser?> registerUser(RegisterUser user) {
     return _remoteUserDataSources.register(user);
   }
 }

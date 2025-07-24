@@ -1,33 +1,40 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:remittance/app/config/extensions/them_extention.dart';
+import 'package:remittance/app/config/route/routes.gr.dart';
 import 'package:remittance/app/thems/app_buttons_styles.dart';
 import 'package:remittance/app/thems/size_config.dart';
+import 'package:remittance/app/utils/enums.dart';
+import 'package:remittance/app/utils/helper_methods.dart';
+import 'package:remittance/domain/dto/user/register_request.dart';
+import 'package:remittance/presentation/riverpod/user/userProvider.dart';
 import 'package:remittance/presentation/widgets/app_bar.dart';
 import 'package:remittance/presentation/widgets/input_field.dart';
 import 'package:remittance/presentation/widgets/text_widget.dart';
 
 @RoutePage()
-class CreateAccountScreen extends StatefulWidget {
+class CreateAccountScreen extends ConsumerStatefulWidget {
   const CreateAccountScreen({super.key});
 
   @override
-  State<CreateAccountScreen> createState() => _CreateAccountScreenState();
+  ConsumerState<CreateAccountScreen> createState() => _CreateAccountScreenState();
 }
 
-class _CreateAccountScreenState extends State<CreateAccountScreen> {
+class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
   final _phoneNumberController = TextEditingController();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
-  final _createPINController = TextEditingController();
-  final _confirmPINController = TextEditingController();
+  final _createPasswordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   final _phoneNumberFormKey = GlobalKey<FormState>();
   final _nameFormKey = GlobalKey<FormState>();
   final _emailFormKey = GlobalKey<FormState>();
-  final _createPINFormKey = GlobalKey<FormState>();
-  final _confirmPINFormKey = GlobalKey<FormState>();
+  final _createPasswordFormKey = GlobalKey<FormState>();
+  final _confirmPasswordFormKey = GlobalKey<FormState>();
 
   bool checkTermsAndConditions = false;
   @override
@@ -49,12 +56,19 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 height: MySize.size30,
               ),
               _customInputField(
-                labelText: "Name",
-                hintText: "Name",
+                labelText: "Full NAme",
+                hintText: "Full Name",
                 controller: _nameController,
                 formKey: _nameFormKey,
-                validator: (String? values) {},
-                onChanged: (String values) {},
+                validator: (String? values) {
+                  if(values==null || values.isEmpty||values.length<3){
+                    return "Enter valid full name";
+                  }
+                  return null;
+                },
+                onChanged: (String values) {
+                  validateCurrentFormKey(_nameFormKey);
+                },
               ),
               SizedBox(
                 height: MySize.size18,
@@ -64,41 +78,60 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 hintText: "Phone Number",
                 controller: _phoneNumberController,
                 formKey: _phoneNumberFormKey,
-                validator: (String? values) {},
-                onChanged: (String values) {},
+                keyboardType: TextInputType.phone,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly,],
+                validator: (String? values) {
+                  return isPhoneNumber(values??"")?null:"Enter valid phone number";
+                },
+                onChanged: (String values) {
+                  validateCurrentFormKey(_phoneNumberFormKey);
+                },
               ),
               SizedBox(
                 height: MySize.size18,
               ),
               _customInputField(
-                labelText: "Email Optional",
-                hintText: "Email Optional",
+                labelText: "Email",
+                hintText: "Email",
                 controller: _emailController,
                 formKey: _emailFormKey,
-                validator: (String? values) {},
-                onChanged: (String values) {},
+                keyboardType: TextInputType.emailAddress,
+                validator: (String? values) {
+                  return isEmail(values??"")?null:"Enter valid email address";
+                },
+                onChanged: (String values) {
+                  validateCurrentFormKey(_emailFormKey);
+                },
               ),
               SizedBox(
                 height: MySize.size18,
               ),
               _customInputField(
-                labelText: "Create PIN",
-                hintText: "Create PIN",
-                controller: _createPINController,
-                formKey: _createPINFormKey,
-                validator: (String? values) {},
-                onChanged: (String values) {},
+                labelText: "Password",
+                hintText: "Password",
+                controller: _createPasswordController,
+                formKey: _createPasswordFormKey,
+                validator: (String? values) {
+                  return validatePassword(values??"");
+                },
+                onChanged: (String values) {
+                  validateCurrentFormKey(_createPasswordFormKey);
+                },
               ),
               SizedBox(
                 height: MySize.size18,
               ),
               _customInputField(
-                labelText: "Confirm PIN",
-                hintText: "Confirm PIN",
-                controller: _confirmPINController,
-                formKey: _confirmPINFormKey,
-                validator: (String? values) {},
-                onChanged: (String values) {},
+                labelText: "Confirm Password",
+                hintText: "Confirm Password",
+                controller: _confirmPasswordController,
+                formKey: _confirmPasswordFormKey,
+                validator: (String? values) {
+                  return validateConfirmPassword(_createPasswordController.text, values??"")?null:"Match your password please";
+                },
+                onChanged: (String values) {
+                  validateCurrentFormKey(_confirmPasswordFormKey);
+                },
               ),
               SizedBox(
                 height: MySize.size22,
@@ -220,10 +253,45 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               themeData: context.themeData.textTheme.headlineSmall!,
               fontWeight: 500,
               fontSize: MySize.size18,
-              // color: AppColors.darkRoundedButtonColor,
             ),
           ),
-          onPressed: () async {}),
+          onPressed: () async {
+            if(validateCurrentFormKey(_nameFormKey)&&validateCurrentFormKey(_phoneNumberFormKey)&&validateCurrentFormKey(_emailFormKey)&&
+                validateCurrentFormKey(_createPasswordFormKey) &&validateCurrentFormKey(_confirmPasswordFormKey)){
+              if(!checkTermsAndConditions){
+                showAnimatedSnackBar(message: "Please accept terms and conditions", context: context,showCloseIcon: true);
+              }
+              else{
+                EasyLoading.show();
+                await ref.read(authNotifierProvider.notifier).register(RegisterUser(name: _nameController.text,
+                    email: _emailController.text,
+                    password: _createPasswordController.text,
+                    balance: 1000.0,
+                    currency: "USD",
+                    confirmPassword: _confirmPasswordController.text,
+                    phoneNumber: int.tryParse(_phoneNumberController.text)??0));
+                final authState = ref.read(authNotifierProvider);
+                if (authState.status == AuthStatus.authenticated) {
+                  context.router.popForced();
+                  showAnimatedSnackBar(
+                    message:'Registration is success now you can login and enjoy it!',
+                    context: context,
+                    showCloseIcon: false,
+                  );
+                }
+                else if (authState.status == AuthStatus.error) {
+                  if (mounted) {
+                    showAnimatedSnackBar(
+                      message:authState.errorMessage ?? 'Registration failed',
+                      context: context,
+                      showCloseIcon: true,
+                    );
+                  }
+                }
+                EasyLoading.dismiss();
+              }
+            }
+          }),
     );
   }
 }

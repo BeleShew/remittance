@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:remittance/app/config/extensions/them_extention.dart';
 import 'package:remittance/app/config/route/routes.gr.dart';
@@ -12,19 +13,13 @@ import 'package:remittance/app/utils/auth.dart';
 import 'package:remittance/app/utils/enums.dart';
 import 'package:remittance/app/utils/helper_methods.dart';
 import 'package:remittance/presentation/riverpod/user/authState.dart';
-import 'package:remittance/presentation/riverpod/user/userRepository.dart';
+import 'package:remittance/presentation/riverpod/user/userProvider.dart';
 import 'package:remittance/presentation/widgets/app_bar.dart';
 import 'package:remittance/presentation/widgets/input_field.dart';
 import 'package:remittance/presentation/widgets/text_widget.dart';
 import 'package:remittance/presentation/widgets/visibility_toggle.dart';
 
 @RoutePage()
-// class LoginScreen extends StatefulWidget {
-//   const LoginScreen({super.key});
-//
-//   @override
-//   State<LoginScreen> createState() => _LoginScreenState();
-// }
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
@@ -211,19 +206,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   Widget _joinNowButton() {
-    final isLoading = ref.watch(authNotifierProvider).status == AuthStatus.loading;
     return TextButton(
         style: AppButtonStyles.darkRoundedBorderButton,
-      onPressed: isLoading
-          ? null
-          : () async {
+      onPressed:() async {
+        EasyLoading.show();
         if (_validateFormKey(__emailFormKey) && _validateFormKey(_passwordFormKey)) {
           final email = _emailController.text;
           await ref.read(authNotifierProvider.notifier).login(email,_passwordController.text);
           final authState = ref.read(authNotifierProvider);
           if (authState.status == AuthStatus.authenticated) {
             context.router.replace(HomeRoute());
-          } else if (authState.status == AuthStatus.error) {
+          }
+          else if (authState.status == AuthStatus.error) {
             if (mounted) {
               showAnimatedSnackBar(
                 message:authState.errorMessage ?? 'Login failed',
@@ -232,10 +226,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               );
             }
           }
+          EasyLoading.dismiss();
         }
       },
-        child:isLoading
-            ? const CircularProgressIndicator(): Text(
+        child:Text(
           "Login",
           style: TextWidgetText.textWidgetStyle(
             themeData: context.themeData.textTheme.headlineSmall!,

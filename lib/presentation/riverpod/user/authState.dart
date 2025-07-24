@@ -27,7 +27,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = AuthState(status: AuthStatus.loading);
     try {
       final user = await _userRepository.login(email);
-      if(user.email!=null &&user.email!.isNotEmpty){
+      if(user?.email!=null &&user!.email!.isNotEmpty){
         if(user.password!=null && hasMatch(user.password, password)){
           state = AuthState(status: AuthStatus.authenticated, user: user);
       }else{
@@ -45,11 +45,17 @@ class AuthNotifier extends StateNotifier<AuthState> {
   Future<void> register(RegisterUser user) async {
     state = AuthState(status: AuthStatus.loading);
     try {
-      final result = await _userRepository.registerUser(user);
-      if (result?.statusCode!= null && result?.statusCode=="200") {
-        state = AuthState(status: AuthStatus.authenticated);
-      } else {
-        state = AuthState(status: AuthStatus.error, errorMessage: result?.statusMessage);
+      final checkAlreadyExist = await _userRepository.login(user.email??"");
+      if(checkAlreadyExist?.email!=null &&checkAlreadyExist!.email!.isNotEmpty){
+        state = AuthState(status: AuthStatus.error, errorMessage: "User already exist");
+      }else{
+        final result = await _userRepository.registerUser(user);
+        if (result?.email!= null && result!.email!.isNotEmpty) {
+          state = AuthState(status: AuthStatus.authenticated);
+        }
+        else {
+          state = AuthState(status: AuthStatus.error, errorMessage: "Unable to create the new user");
+        }
       }
     } catch (e) {
       state = AuthState(status: AuthStatus.error, errorMessage: e.toString());
