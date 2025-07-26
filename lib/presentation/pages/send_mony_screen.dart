@@ -10,7 +10,7 @@ import 'package:remittance/app/utils/helper_methods.dart';
 import 'package:remittance/domain/dto/user/login_response.dart';
 import 'package:remittance/domain/dto/user/transaction.dart';
 import 'package:remittance/presentation/riverpod/transaction/transaction_provider.dart';
-import 'package:remittance/presentation/riverpod/user/userProvider.dart';
+import 'package:remittance/presentation/riverpod/user/user_provider.dart';
 import 'package:remittance/presentation/widgets/app_bar.dart';
 import 'package:remittance/presentation/widgets/input_field.dart';
 import 'package:remittance/presentation/widgets/text_widget.dart';
@@ -64,16 +64,10 @@ class _SendMoneyScreenState extends ConsumerState<SendMoneyScreen> {
                 children: [
                   _textFormWidget(),
                   const SizedBox(height: 16),
-                  Theme(
-                    data: Theme.of(context).copyWith(
-                      canvasColor: AppColors.lightBlack
-                    ),
-                    child: DropdownButtonFormField<String>(
-                      value: _currency,
-                      iconEnabledColor: Colors.black,
-                      onChanged: (val) => setState(() => _currency = val!),
-                      items: ['USD', 'EUR', 'ETB'].map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
-                    ),
+                  DropdownButtonFormField<String>(
+                    value: _currency,
+                    onChanged: (val) => setState(() => _currency = val!),
+                    items: ['USD', 'EUR', 'ETB'].map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
                   ),
                   SizedBox(height: MySize.size12),
                   ElevatedButton(

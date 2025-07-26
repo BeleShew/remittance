@@ -65,7 +65,12 @@ class AppButtonStyles {
       TextStyle(fontSize: MySize.size18, fontWeight: FontWeight.w500,color: AppColors.darkRoundedButtonColor),
     ),
   );
-
+  static final ButtonStyle lightBorderButton = TextButton.styleFrom(
+    foregroundColor: Colors.black, // Text color
+    side: const BorderSide(color: Colors.black87, width: 1), // Black border
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+  );
 //flat
   static final flat = ButtonStyle(
     backgroundColor: WidgetStateProperty.all(AppColors.black),

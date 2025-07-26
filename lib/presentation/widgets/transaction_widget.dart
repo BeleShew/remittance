@@ -203,7 +203,7 @@ import 'package:remittance/app/thems/size_config.dart';
 import 'package:remittance/domain/dto/user/register_request.dart';
 import 'package:remittance/domain/dto/user/transaction.dart';
 import 'package:remittance/presentation/riverpod/transaction/transaction_provider.dart';
-import 'package:remittance/presentation/riverpod/user/userProvider.dart';
+import 'package:remittance/presentation/riverpod/user/user_provider.dart';
 import 'package:remittance/presentation/widgets/text_widget.dart';
 import 'package:intl/intl.dart';
 
@@ -305,7 +305,8 @@ class TransactionWidget extends ConsumerWidget {
                   padding: EdgeInsets.only(bottom: MySize.size5 ?? 5),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: AppColors.lightBlack,
+                      // color: AppColors.lightBlack,
+                      color: Theme.of(context).brightness == Brightness.dark ? AppColors.lightBlack : AppColors.lightestGrey,
                       borderRadius: BorderRadius.circular(MySize.size14 ?? 14),
                     ),
                     padding: EdgeInsets.symmetric(
@@ -322,13 +323,15 @@ class TransactionWidget extends ConsumerWidget {
                             children: [
                               Container(
                                 decoration: BoxDecoration(
-                                  color: AppColors.lightGrey,
+                                  // color: AppColors.lightGrey,
+                                  color: Theme.of(context).brightness == Brightness.dark ? AppColors.lightGrey : AppColors.lightestGrey,
                                   borderRadius:
                                   BorderRadius.circular(MySize.size30 ?? 30),
                                 ),
                                 padding: EdgeInsets.all(MySize.size8 ?? 8),
                                 child: Image.asset(
                                   iconPath,
+                                  color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
                                   width: MySize.size20,
                                   height: MySize.size20,
                                 ),

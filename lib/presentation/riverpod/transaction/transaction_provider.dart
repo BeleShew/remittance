@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart' show FutureProvider;
 import 'package:remittance/app/utils/enums.dart';
 import 'package:remittance/app/utils/helper_methods.dart';
-import 'package:remittance/presentation/riverpod/user/userProvider.dart';
+import 'package:remittance/presentation/riverpod/user/user_provider.dart';
 
 final transactionDataProvider = FutureProvider<Map<String, dynamic>>((ref) async {
   final notifier = ref.read(authNotifierProvider.notifier);

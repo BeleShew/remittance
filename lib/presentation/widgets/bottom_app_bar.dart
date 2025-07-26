@@ -76,7 +76,8 @@ class FABBottomAppBarState extends State<FABBottomAppBar> {
                 Image.asset(item.imageUrl??"",
                   width: MySize.size24,
                   height: MySize.size24,
-                  color: widget.currentSelectedIndex == index ? AppColors.white : AppColors.darkGrey,),
+                  color: widget.currentSelectedIndex == index ? AppColors.primary : AppColors.darkGrey,
+                  ),
                 // Icon(
                 //   item.iconData,color:widget.currentSelectedIndex == index ? AppColors.white : AppColors.darkGrey,
                 //   size:MySize.size24,
@@ -90,7 +91,7 @@ class FABBottomAppBarState extends State<FABBottomAppBar> {
                   text: item.text??"",
                   themeData: context.themeData.textTheme.displaySmall!,
                   fontSize: MySize.size8,
-                  color: widget.currentSelectedIndex == index ? AppColors.white : AppColors.darkGrey,
+                  color: widget.currentSelectedIndex == index ? AppColors.primary : AppColors.darkGrey,
                   fontWeight: 400,
                   textAlign: TextAlign.center,
                 ):Container(),

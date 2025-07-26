@@ -105,15 +105,18 @@ class _ServiceWidgetState extends State<ServiceWidget> {
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: MySize.size14 ?? 0, vertical: MySize.size24 ?? 0),
             decoration: BoxDecoration(
-              color: AppColors.lightBlack,
-              borderRadius:
-                  BorderRadius.all(Radius.circular(MySize.size12 ?? 0)),
+              color: Theme.of(context).brightness == Brightness.dark ? AppColors.lightBlack : AppColors.lightestGrey,
+              borderRadius: BorderRadius.all(Radius.circular(MySize.size12 ?? 0)),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 details?[detailsIndex].imageUrl!=null && details![detailsIndex].imageUrl!.isNotEmpty?
-                    Image.asset(details[detailsIndex].imageUrl??"") : Icon(Icons.shopping_cart_checkout_outlined, size: MySize.size30),
+                    Image.asset(details[detailsIndex].imageUrl??"",
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black,
+                    ) : Icon(Icons.shopping_cart_checkout_outlined, size: MySize.size30),
                 SizedBox(height: MySize.size10),
                 Flexible(
                   child: TextWidgetText.textWidget(

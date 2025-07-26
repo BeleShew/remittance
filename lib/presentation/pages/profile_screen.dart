@@ -5,10 +5,12 @@ import 'package:remittance/app/config/extensions/them_extention.dart';
 import 'package:remittance/app/config/route/routes.gr.dart';
 import 'package:remittance/app/thems/colors.dart';
 import 'package:remittance/app/thems/size_config.dart';
+import 'package:remittance/presentation/riverpod/theme/theme_mode_provider.dart';
 import 'package:remittance/presentation/riverpod/transaction/transaction_provider.dart';
-import 'package:remittance/presentation/riverpod/user/userProvider.dart';
+import 'package:remittance/presentation/riverpod/user/user_provider.dart';
 import 'package:remittance/presentation/widgets/app_bar.dart';
 import 'package:remittance/presentation/widgets/text_widget.dart';
+import 'package:remittance/presentation/widgets/theme_selector.dart';
 
 @RoutePage()
 class ProfileScreen extends ConsumerStatefulWidget {
@@ -121,6 +123,20 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>{
                   ),
 
                   _buildListTile(
+                    title: "Theme",
+                    subtitle: "Change the app theme",
+                    context: context,
+                    icon: Icons.dark_mode_rounded,
+                    onTap: (){
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (_) => ThemeSelectorSheet(ref),
+                      );
+                    },
+                    trailing: const Icon(Icons.arrow_forward_ios_outlined),
+                  ),
+
+                  _buildListTile(
                     title: "About",
                     subtitle: "About this app",
                     context: context,
@@ -136,7 +152,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>{
                     titleColor: AppColors.blue,
                     onTap: (){
                       ref.invalidate(transactionDataProvider);
-                      // ref.invalidate(authNotifierProvider);
                       context.router.replace(const LoginRoute());
                     },
                     trailing: const Icon(Icons.arrow_forward_ios_outlined,),

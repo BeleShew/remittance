@@ -113,20 +113,15 @@ class ExchangeRateScreen extends ConsumerWidget {
     required String value,
     required Function(String) onChanged,
   }) {
-    return Theme(
-      data: Theme.of(context).copyWith(
-          canvasColor: AppColors.lightBlack
-      ),
-      child: DropdownButton<String>(
-        value: value,
-        items: currencies.map((String currency) {
-          return DropdownMenuItem(
-            value: currency,
-            child: Text(currency, style: const TextStyle(fontSize: 18)),
-          );
-        }).toList(),
-        onChanged: (newValue) => onChanged(newValue!),
-      ),
+    return DropdownButton<String>(
+      value: value,
+      items: currencies.map((String currency) {
+        return DropdownMenuItem(
+          value: currency,
+          child: Text(currency, style: const TextStyle(fontSize: 18)),
+        );
+      }).toList(),
+      onChanged: (newValue) => onChanged(newValue!),
     );
   }
 }

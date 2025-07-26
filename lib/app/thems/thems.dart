@@ -16,15 +16,15 @@ class AppTheme {
       case 300:
         return FontWeight.w300;
       case 400:
-        return FontWeight.w300;
-      case 500:
         return FontWeight.w400;
-      case 600:
+      case 500:
         return FontWeight.w500;
-      case 700:
+      case 600:
         return FontWeight.w600;
-      case 800:
+      case 700:
         return FontWeight.w700;
+      case 800:
+        return FontWeight.w800;
       case 900:
         return FontWeight.w900;
     }
@@ -117,7 +117,9 @@ class AppTheme {
       useMaterial3: false,
       brightness: Brightness.light,
       primaryColor: const Color(0xFF1C6BB0),
-      canvasColor: Colors.transparent,
+      // canvasColor: Colors.transparent,
+      // scaffoldBackgroundColor: const Color(0xffffffff),
+      canvasColor: const Color(0xffffffff), // Match the scaffold or card color
       scaffoldBackgroundColor: const Color(0xffffffff),
       appBarTheme: AppBarTheme(
         actionsIconTheme: const IconThemeData(
@@ -204,26 +206,27 @@ class AppTheme {
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ButtonStyle(
-            minimumSize: WidgetStateProperty.all(const Size(90, 45)),
-            backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
-              if (states.contains(WidgetState.disabled)) {
-                return Colors.grey.withAlpha(100);
-              }
-              return const Color(0xFF1C6BB0);
-            }),
-            foregroundColor: WidgetStateProperty.resolveWith<Color>((states) {
-              if (states.contains(WidgetState.disabled)) {
-                return Colors.black.withAlpha(100);
-              }
-              return Colors.white;
-            }),
-            padding: WidgetStateProperty.all(
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0)),
-            shape: WidgetStateProperty.all(
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0))),
-          )),
-      //fontFamily: "SFProText",
+        style: ButtonStyle(
+          minimumSize: WidgetStateProperty.all(const Size(90, 45)),
+          backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return Colors.grey.withAlpha(100);
+            }
+            return const Color(0xFF1C6BB0);
+          }),
+          foregroundColor: WidgetStateProperty.resolveWith<Color>((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return Colors.black.withAlpha(100);
+            }
+            return Colors.white;
+          }),
+          padding: WidgetStateProperty.all(
+              const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0)),
+          shape: WidgetStateProperty.all(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0))),
+        ),
+      ),
+
       textButtonTheme: TextButtonThemeData(
           style: ButtonStyle(
             foregroundColor: WidgetStateProperty.all(const Color(0xFF1C6BB0)),
@@ -307,8 +310,10 @@ class AppTheme {
     useMaterial3: false,
     brightness: Brightness.dark,
     primaryColor: const Color(0xFF1C6BB0),
-    canvasColor: Colors.transparent,
-    scaffoldBackgroundColor: const Color(0xFF1C1C1C), // Dark background
+    // canvasColor: Colors.transparent,
+    // scaffoldBackgroundColor: const Color(0xFF1C1C1C), // Dark background
+    canvasColor: const Color(0xFF1C1C1C), // Match the scaffold background
+    scaffoldBackgroundColor: const Color(0xFF1C1C1C),
     appBarTheme: AppBarTheme(
       actionsIconTheme: const IconThemeData(
         color: Color(0xffe0e0e0),

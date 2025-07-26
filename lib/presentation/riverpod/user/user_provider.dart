@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:remittance/app/config/injections/dependency_injection.dart';
 import 'package:remittance/domain/repositories/user/user.dart';
-import 'package:remittance/presentation/riverpod/user/authState.dart';
+import 'package:remittance/presentation/riverpod/user/auth_state.dart';
 
 final userRepositoryProvider = Provider<UserRepository>((ref) {
   return getIt<UserRepository>();

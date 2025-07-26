@@ -6,7 +6,7 @@ import 'package:remittance/app/thems/colors.dart';
 import 'package:remittance/app/thems/size_config.dart';
 import 'package:remittance/app/utils/helper_methods.dart';
 import 'package:remittance/domain/dto/user/login_response.dart';
-import 'package:remittance/presentation/riverpod/user/userProvider.dart';
+import 'package:remittance/presentation/riverpod/user/user_provider.dart';
 import 'package:remittance/presentation/widgets/nav_bar_app_bar.dart';
 import 'package:remittance/presentation/widgets/service_widget.dart';
 import 'package:remittance/presentation/widgets/text_widget.dart';
@@ -48,9 +48,9 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
 
   Widget _getGreetingWidget(LoginResponse? user) {
     return NavAppBarTitle(
-      title: "Selam ${user?.name ?? "BelachewSh"}",
-      titleColor: AppColors.white,
-      subTitleColor: AppColors.white,
+      title: "Selam, ${user?.name ?? "BelachewSh"}",
+      // titleColor: AppColors.white,
+      // subTitleColor: AppColors.white,
       subTitle: getGreeting(),
       iconPath: Icons.notifications,
     );

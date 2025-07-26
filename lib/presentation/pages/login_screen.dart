@@ -12,8 +12,8 @@ import 'package:remittance/app/thems/size_config.dart';
 import 'package:remittance/app/utils/auth.dart';
 import 'package:remittance/app/utils/enums.dart';
 import 'package:remittance/app/utils/helper_methods.dart';
-import 'package:remittance/presentation/riverpod/user/authState.dart';
-import 'package:remittance/presentation/riverpod/user/userProvider.dart';
+import 'package:remittance/presentation/riverpod/user/auth_state.dart';
+import 'package:remittance/presentation/riverpod/user/user_provider.dart';
 import 'package:remittance/presentation/widgets/app_bar.dart';
 import 'package:remittance/presentation/widgets/input_field.dart';
 import 'package:remittance/presentation/widgets/text_widget.dart';
@@ -243,14 +243,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   Widget _registerButton() {
     return TextButton(
-        style: AppButtonStyles.darkBorderButton,
+        style:  Theme.of(context).brightness == Brightness.dark
+            ? AppButtonStyles.darkBorderButton
+            : AppButtonStyles.lightBorderButton,
         child: Text(
           "Sign up",
           style: TextWidgetText.textWidgetStyle(
             themeData: context.themeData.textTheme.headlineSmall!,
             fontWeight: 500,
             fontSize: MySize.size18,
-            color: AppColors.white,
+            // color: AppColors.white,
           ),
         ),
         onPressed: () async {
