@@ -76,7 +76,7 @@ A mobile remittance application built with **Flutter**, powered by **Riverpod** 
     Authentication state
     User profile and balance
     Transaction data
-    Theme preferences (with SharedPreferences)
+    Theme preferences
 
 
 ## 📁 Project Structure
