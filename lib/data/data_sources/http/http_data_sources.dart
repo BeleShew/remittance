@@ -6,15 +6,14 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:remittance/app/utils/enums.dart';
 import 'package:remittance/app/utils/helper_methods.dart';
 import 'package:remittance/domain/dto/http/http_attrib_options.dart';
-import 'package:remittance/domain/repositories/http/access_token_repository.dart';
 @lazySingleton
 class HttpDataSources{
-  final AccessTokenRepository _accessTokenRepository;
+  // final AccessTokenRepository _accessTokenRepository;
   final _dio = Dio(BaseOptions(
       connectTimeout: const Duration(seconds: 60), // 60 seconds60 * 1000
       receiveTimeout: const Duration(seconds: 60) // 60 seconds
   ));
-  HttpDataSources(this._accessTokenRepository){
+  HttpDataSources(){
     _dio.interceptors.add(InterceptorsWrapper(onRequest: _onRequestInterceptor));
     if (kDebugMode) {
       _dio.interceptors.add(PrettyDioLogger(
@@ -28,15 +27,10 @@ class HttpDataSources{
     }
   }
   _onRequestInterceptor(RequestOptions options, RequestInterceptorHandler handler) async {
-    String token=await _accessTokenRepository.getLocalAccessToken()??await _accessTokenRepository.getRemoteAccessToken()??"";
-    if (token.isNotEmpty) {
-      options.headers['Authorization'] = 'Bearer $token';
-    }
     return handler.next(options);
   }
   Future<String?> send(HttpAttribOptions httpAttribOptions) async {
       var url = Uri.parse(httpAttribOptions.baseUrl + httpAttribOptions.path);
-
       try {
         if(httpAttribOptions.serializationMethod==BodySerializationMethod.UrlEncoded){
           _dio.options.headers={'Content-Type': 'application/x-www-form-urlencoded'};
@@ -77,10 +71,6 @@ class HttpDataSources{
         }
       } on DioException catch (e) {
         if ((e.response?.statusCode == 401 || e.response?.statusCode == 403)){
-          var updatedAccessToken= await _accessTokenRepository.getRemoteAccessToken();
-          if(updatedAccessToken!=null && updatedAccessToken.isNotEmpty) {
-            await _accessTokenRepository.setAccessToken(updatedAccessToken);
-          }
           _dio.interceptors.add(InterceptorsWrapper(onRequest:_onRequestInterceptor));
           final response =await _dio.request(url.path,
               data: httpAttribOptions.formData ?? httpAttribOptions.body,

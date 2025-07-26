@@ -219,15 +219,11 @@ class TransactionWidget extends ConsumerWidget {
         final sent = data["sent"] as List<TransactionModel>;
         final received = data["received"] as List<TransactionModel>;
         final userMap = data["users"] as Map<String, RegisterUser>;
-
-        final currentUserId = ref
-            .watch(authNotifierProvider)
-            .user
-            ?.id ?? "";
+        final currentUserId = ref.watch(authNotifierProvider).user?.id ?? "";
         final allTransactions = [...sent, ...received];
         allTransactions.sort((a, b) => b.timestamp!.compareTo(a.timestamp!));
 
-        return Padding(
+        return allTransactions.isNotEmpty? Padding(
           padding: EdgeInsets.symmetric(
             horizontal: MySize.size14 ?? 14,
             vertical: MySize.size5 ?? 5,
@@ -356,7 +352,7 @@ class TransactionWidget extends ConsumerWidget {
               }),
             ],
           ),
-        );
+        ):Container();
       },
     );
   }

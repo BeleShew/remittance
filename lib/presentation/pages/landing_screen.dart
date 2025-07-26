@@ -84,7 +84,7 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
                 children: [
                   _text(
                     showBalance
-                        ? "${user?.balance ?? 0} ${user?.currency ?? ''}"
+                        ? "${user?.balance ?? 0} ${user?.currency?.toUpperCase() ?? ''}"
                         : "******",
                     MySize.size24,
                     FontWeight.w400,

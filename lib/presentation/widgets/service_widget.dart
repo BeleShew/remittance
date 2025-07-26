@@ -76,7 +76,7 @@ class _ServiceWidgetState extends State<ServiceWidget> {
                 children: [
                   servicesList[currentIndex].details != null && servicesList[currentIndex].details!.isNotEmpty ? _buildServiceDetailsWidget(servicesList[currentIndex].details) : _buildServicesEmptyWidget(),
                   SizedBox(height: MySize.size5,),
-                  currentIndex==0? const TransactionWidget():Container(),
+                  const TransactionWidget()
                 ],
               ),
             ),

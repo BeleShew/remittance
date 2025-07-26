@@ -14,7 +14,7 @@ import 'package:remittance/presentation/riverpod/user/userProvider.dart';
 import 'package:remittance/presentation/widgets/app_bar.dart';
 import 'package:remittance/presentation/widgets/input_field.dart';
 import 'package:remittance/presentation/widgets/text_widget.dart';
-
+import 'package:uuid/uuid.dart';
 @RoutePage()
 class CreateAccountScreen extends ConsumerStatefulWidget {
   const CreateAccountScreen({super.key});
@@ -267,7 +267,8 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                     email: _emailController.text,
                     password: _createPasswordController.text,
                     balance: 1000.0,
-                    currency: "USD",
+                    currency: enumToString(SupportedCurrency.usd),
+                    id: Uuid().v4(),
                     accountNumber: generateAccountNumber(),
                     confirmPassword: _confirmPasswordController.text,
                     phoneNumber: int.tryParse(_phoneNumberController.text)??0));

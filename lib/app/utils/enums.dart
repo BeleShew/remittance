@@ -101,3 +101,4 @@ enum PageTransitionType {
 enum AuthStatus { initial, loading, authenticated, error }
 
 enum TransactionStatus { pending, sent, debited, failed }
+enum SupportedCurrency { usd, eur, etb, zh }

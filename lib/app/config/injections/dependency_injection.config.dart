@@ -12,18 +12,10 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:remittance/data/data_sources/http/http_data_sources.dart'
     as _i876;
-import 'package:remittance/data/data_sources/http/local_access_token.dart'
-    as _i712;
-import 'package:remittance/data/data_sources/http/remote_access_token.dart'
-    as _i215;
 import 'package:remittance/data/data_sources/user/user.dart' as _i542;
-import 'package:remittance/data/repositories/http/access_token_repository.dart'
-    as _i163;
 import 'package:remittance/data/repositories/http/http_repositories.dart'
     as _i628;
 import 'package:remittance/data/repositories/user/user.dart' as _i912;
-import 'package:remittance/domain/repositories/http/access_token_repository.dart'
-    as _i443;
 import 'package:remittance/domain/repositories/http/http_repository.dart'
     as _i965;
 import 'package:remittance/domain/repositories/user/user.dart' as _i419;
@@ -39,17 +31,7 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
-    gh.lazySingleton<_i712.LocalAccessTokenDataSources>(
-        () => _i712.LocalAccessTokenDataSources());
-    gh.lazySingleton<_i215.RemoteAccessTokenDataSources>(
-        () => _i215.RemoteAccessTokenDataSources());
-    gh.lazySingleton<_i443.AccessTokenRepository>(
-        () => _i163.AccessTokenRepositoryImpl(
-              gh<_i215.RemoteAccessTokenDataSources>(),
-              gh<_i712.LocalAccessTokenDataSources>(),
-            ));
-    gh.lazySingleton<_i876.HttpDataSources>(
-        () => _i876.HttpDataSources(gh<_i443.AccessTokenRepository>()));
+    gh.lazySingleton<_i876.HttpDataSources>(() => _i876.HttpDataSources());
     gh.lazySingleton<_i965.HttpRepository>(
         () => _i628.HttpRepositoryImpl(gh<_i876.HttpDataSources>()));
     gh.lazySingleton<_i542.UserDataSources>(
