@@ -55,12 +55,6 @@ class AppRouter extends $AppRouter {
             durationInMilliseconds: 500,
             reverseDurationInMilliseconds: 500,
             transitionsBuilder: circularFadeTransition),
-    // CustomRoute(
-    //         path: '/biometricScreen',
-    //         page: BiometricRoute.page,
-    //         durationInMilliseconds: 500,
-    //         reverseDurationInMilliseconds: 500,
-    //         transitionsBuilder: circularFadeTransition),
     CustomRoute(
         path: '/notificationScreen',
         page: NotificationRoute.page,
@@ -70,6 +64,12 @@ class AppRouter extends $AppRouter {
     CustomRoute(
         path: '/sendMoney',
         page: SendMoneyRoute.page,
+        durationInMilliseconds: 500,
+        reverseDurationInMilliseconds: 500,
+        transitionsBuilder: circularFadeTransition),
+    CustomRoute(
+        path: '/exchangeRateScreen',
+        page: ExchangeRateRoute.page,
         durationInMilliseconds: 500,
         reverseDurationInMilliseconds: 500,
         transitionsBuilder: circularFadeTransition),

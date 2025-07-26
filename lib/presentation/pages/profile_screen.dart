@@ -5,6 +5,7 @@ import 'package:remittance/app/config/extensions/them_extention.dart';
 import 'package:remittance/app/config/route/routes.gr.dart';
 import 'package:remittance/app/thems/colors.dart';
 import 'package:remittance/app/thems/size_config.dart';
+import 'package:remittance/presentation/riverpod/transaction/transaction_provider.dart';
 import 'package:remittance/presentation/riverpod/user/userProvider.dart';
 import 'package:remittance/presentation/widgets/app_bar.dart';
 import 'package:remittance/presentation/widgets/text_widget.dart';
@@ -133,7 +134,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>{
                     context: context,
                     leadingColor: AppColors.blue,
                     titleColor: AppColors.blue,
-                    onTap: ()=>context.router.replace(const LoginRoute()),
+                    onTap: (){
+                      ref.invalidate(transactionDataProvider);
+                      ref.invalidate(authNotifierProvider);
+                      context.router.replace(const LoginRoute());
+                    },
                     trailing: const Icon(Icons.arrow_forward_ios_outlined,),
                   ),
                 ],

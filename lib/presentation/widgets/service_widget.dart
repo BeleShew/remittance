@@ -173,7 +173,7 @@ class _ServiceWidgetState extends State<ServiceWidget> {
         _showNotImplementedMessage();
         break;
       case 'exchange':
-        _showNotImplementedMessage();
+        context.router.push(ExchangeRateRoute());
         break;
       case 'borrowing':
         _showNotImplementedMessage();

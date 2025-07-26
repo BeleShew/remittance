@@ -202,7 +202,7 @@ import 'package:remittance/app/thems/colors.dart';
 import 'package:remittance/app/thems/size_config.dart';
 import 'package:remittance/domain/dto/user/register_request.dart';
 import 'package:remittance/domain/dto/user/transaction.dart';
-import 'package:remittance/presentation/riverpod/user/transaction_provider.dart';
+import 'package:remittance/presentation/riverpod/transaction/transaction_provider.dart';
 import 'package:remittance/presentation/riverpod/user/userProvider.dart';
 import 'package:remittance/presentation/widgets/text_widget.dart';
 import 'package:intl/intl.dart';
