@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:remittance/app/config/extensions/them_extention.dart';
@@ -86,6 +87,16 @@ void showCustomSnackBar({required String message,Color? backgroundColor,Color? t
   );
   scaffoldMessengerKey.currentState?.hideCurrentSnackBar();
   scaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+}
+
+String generateAccountNumber() {
+  final random = Random();
+  String accountNumber = '';
+  accountNumber += (random.nextInt(9) + 1).toString(); // 1–9
+  for (int i = 1; i < 13; i++) {
+    accountNumber += random.nextInt(10).toString(); // 0–9
+  }
+  return accountNumber;
 }
 
    void showAnimatedSnackBar({

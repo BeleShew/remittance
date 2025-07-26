@@ -268,6 +268,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                     password: _createPasswordController.text,
                     balance: 1000.0,
                     currency: "USD",
+                    accountNumber: generateAccountNumber(),
                     confirmPassword: _confirmPasswordController.text,
                     phoneNumber: int.tryParse(_phoneNumberController.text)??0));
                 final authState = ref.read(authNotifierProvider);

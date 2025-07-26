@@ -67,6 +67,12 @@ class AppRouter extends $AppRouter {
         durationInMilliseconds: 500,
         reverseDurationInMilliseconds: 500,
         transitionsBuilder: circularFadeTransition),
+    CustomRoute(
+        path: '/sendMoney',
+        page: SendMoneyRoute.page,
+        durationInMilliseconds: 500,
+        reverseDurationInMilliseconds: 500,
+        transitionsBuilder: circularFadeTransition),
   ];
 }
 

@@ -1,18 +1,26 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:remittance/app/config/extensions/them_extention.dart';
 import 'package:remittance/app/config/route/routes.gr.dart';
 import 'package:remittance/app/thems/colors.dart';
 import 'package:remittance/app/thems/size_config.dart';
+import 'package:remittance/presentation/riverpod/user/userProvider.dart';
 import 'package:remittance/presentation/widgets/app_bar.dart';
 import 'package:remittance/presentation/widgets/text_widget.dart';
 
 @RoutePage()
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
 
   @override
+  ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
+}
+class _ProfileScreenState extends ConsumerState<ProfileScreen>{
+@override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authNotifierProvider);
+    final user = authState.user;
     return Scaffold(
       appBar: AppBarWidget(elevation: 0,title: const Text("Profile"),centerTitle: true,),
       body: Column(
@@ -27,18 +35,18 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   SizedBox(height: MySize.size30,),
                   _profileImage(),
-                  SizedBox(height: MySize.size30,),
-                  _userName(context),
-                  _userPhoneNumber(context),
                   SizedBox(height: MySize.size20,),
-                  _editProfiles(context),
+                  _userName(user?.name??"Belesh"),
+                  _userPhoneNumber(user?.phoneNumber??098327),
                   SizedBox(height: MySize.size20,),
-                  _preferences(context),
+                  _editProfiles(),
+                  SizedBox(height: MySize.size20,),
+                  _preferences(),
                 ],
               ),
             ),
           ),
-          // _socialMediaWidget(context),
+          _socialMediaWidget(context),
           SizedBox(height: MySize.size10,),
         ],
       ),
@@ -57,20 +65,20 @@ class ProfileScreen extends StatelessWidget {
             SizedBox(width: MySize.size14,),
             const Icon(Icons.email),
             SizedBox(width: MySize.size14,),
-            const Icon(Icons.chat_bubble),
-            SizedBox(width: MySize.size20,),
+            // const Icon(Icons.chat_bubble),
+            // SizedBox(width: MySize.size20,),
           ],
         );
   }
 
-  Widget _preferences(BuildContext context) {
+  Widget _preferences() {
     return Padding(
         padding: EdgeInsets.all(MySize.size16 ?? 0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _preferencesText(context),
+            _preferencesText(),
             SizedBox(height: MySize.size10),
             Container(
               decoration: BoxDecoration(
@@ -136,7 +144,7 @@ class ProfileScreen extends StatelessWidget {
       );
   }
 
-  Widget _preferencesText(BuildContext context) {
+  Widget _preferencesText() {
     return TextWidgetText.textWidget(
             text: "Preferences",
             themeData: context.themeData.textTheme.displaySmall!,
@@ -171,7 +179,7 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _editProfiles(BuildContext context) {
+  Widget _editProfiles() {
     return Center(
           child: Container(
             decoration: BoxDecoration(
@@ -194,10 +202,10 @@ class ProfileScreen extends StatelessWidget {
         );
   }
 
-  Widget _userPhoneNumber(BuildContext context) {
+  Widget _userPhoneNumber(int phone) {
     return Center(
           child: TextWidgetText.textWidget(
-            text:"+251-946555036",
+            text:"$phone",
             themeData: context.themeData.textTheme.displaySmall!,
             fontSize: MySize.size16,
             fontWeight: 500,
@@ -207,10 +215,10 @@ class ProfileScreen extends StatelessWidget {
         );
   }
 
-  Widget _userName(BuildContext context) {
+  Widget _userName(String name) {
     return Center(
           child: TextWidgetText.textWidget(
-            text:"Belachew Shewa",
+            text:name,
             themeData: context.themeData.textTheme.displaySmall!,
             fontSize: MySize.size16,
             fontWeight: 700,
@@ -222,9 +230,10 @@ class ProfileScreen extends StatelessWidget {
 
   Widget _profileImage() {
     return CircleAvatar(
+      radius: MySize.size28,
           backgroundColor: AppColors.white,
           child: Icon(Icons.account_circle_outlined,
-            size: MySize.size68,
+            size: MySize.size28,
             color: AppColors.primary,),
         );
   }

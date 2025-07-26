@@ -1,5 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:remittance/app/config/extensions/them_extention.dart';
+import 'package:remittance/app/config/route/routes.gr.dart';
 import 'package:remittance/app/thems/colors.dart';
 import 'package:remittance/app/thems/size_config.dart';
 import 'package:remittance/app/utils/helper_methods.dart';
@@ -20,7 +22,7 @@ class _ServiceWidgetState extends State<ServiceWidget> {
       details: [
       ServiceDetails(
         servicesDetailsCallBack: "sendMoney",
-        title: "Send Money",
+        title: "Send",
         imageUrl: "assets/images/send_money.png",
       ),
       ServiceDetails(
@@ -44,7 +46,7 @@ class _ServiceWidgetState extends State<ServiceWidget> {
         imageUrl: "assets/images/merchant.png",
       ),
       ServiceDetails(
-        title: "Airtime Top",
+        title: "Airtime",
         servicesDetailsCallBack: "airtimeTop",
         imageUrl: "assets/images/airtime.png",
       ),
@@ -153,6 +155,7 @@ class _ServiceWidgetState extends State<ServiceWidget> {
     switch (callback) {
       case 'sendMoney':
         try {
+          context.router.push(SendMoneyRoute());
           // final isDevMode = await PlatformChannelHandler.platform.invokeMethod("isDevMode");
           // print("Development Mode Enabled: $isDevMode");
           //
@@ -167,46 +170,29 @@ class _ServiceWidgetState extends State<ServiceWidget> {
         // context.router.push(const CreateAccountRoute());
         break;
       case 'convert':
-        showAnimatedSnackBar(
-          message:'convert',
-          context: context,
-          showCloseIcon: true,
-        );
+        _showNotImplementedMessage();
         break;
       case 'exchange':
-        showAnimatedSnackBar(
-          message:callback,
-          context: context,
-          showCloseIcon: true,
-        );
+        _showNotImplementedMessage();
         break;
       case 'borrowing':
-        showAnimatedSnackBar(
-          message:callback,
-          context: context,
-          showCloseIcon: true,
-        );
+        _showNotImplementedMessage();
         break;
       case 'merchant':
-        showAnimatedSnackBar(
-          message:callback,
-          context: context,
-          showCloseIcon: true,
-        );
+        _showNotImplementedMessage();
         break;
       case 'airtimeTop':
-        showAnimatedSnackBar(
-          message:callback,
-          context: context,
-          showCloseIcon: true,
-        );
+        _showNotImplementedMessage();
         break;
       default:
-        showAnimatedSnackBar(
-          message:callback,
-          context: context,
-          showCloseIcon: true,
-        );
+        _showNotImplementedMessage();
     }
+  }
+  void _showNotImplementedMessage() {
+    showAnimatedSnackBar(
+      message: "This service is currently not implemented.",
+      context: context,
+      showCloseIcon: true,
+    );
   }
 }

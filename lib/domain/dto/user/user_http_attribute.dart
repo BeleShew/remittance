@@ -19,3 +19,55 @@ class RegisterHttpAttribute extends HttpAttribOptions {
     method:RequestMethods.post,
   );
 }
+
+class GetUserListHttpAttribute extends HttpAttribOptions {
+  GetUserListHttpAttribute() : super(
+    baseUrl: Keys.baseURL,
+    path: '/users',
+    method:RequestMethods.get,
+  );
+}
+
+class GetUerByIdHttpAttribute extends HttpAttribOptions {
+  GetUerByIdHttpAttribute({required String userId}) : super(
+    baseUrl: Keys.baseURL,
+    path: '/users/$userId',
+    method:RequestMethods.get,
+  );
+}
+
+class UpdateHttpAttribute extends HttpAttribOptions {
+  UpdateHttpAttribute({required String id,required Object body}) : super(
+    baseUrl: Keys.baseURL,
+    path: '/users/$id',
+    body: body,
+    method:RequestMethods.put,
+  );
+}
+
+class TransactionHttpAttribute extends HttpAttribOptions {
+  TransactionHttpAttribute({required Object body}) : super(
+    baseUrl: Keys.baseURL,
+    path: '/transactions',
+    body: body,
+    method:RequestMethods.post,
+  );
+}
+
+class SendTransactionHttpAttribute extends HttpAttribOptions {
+  SendTransactionHttpAttribute({required String id}) : super(
+    baseUrl: Keys.baseURL,
+    path: '/transactions',
+    queryParameters: {"senderId":id},
+    method:RequestMethods.get,
+  );
+}
+
+class ReceivedTransactionHttpAttribute extends HttpAttribOptions {
+  ReceivedTransactionHttpAttribute({required String id}) : super(
+    baseUrl: Keys.baseURL,
+    path: '/transactions',
+    queryParameters: {"receiverId":id},
+    method:RequestMethods.get,
+  );
+}

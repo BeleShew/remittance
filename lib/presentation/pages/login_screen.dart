@@ -206,8 +206,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   Widget _joinNowButton() {
-    return TextButton(
-        style: AppButtonStyles.darkRoundedBorderButton,
+    return ElevatedButton(
+        // style: AppButtonStyles.darkRoundedBorderButton,
       onPressed:() async {
         EasyLoading.show();
         if (_validateFormKey(__emailFormKey) && _validateFormKey(_passwordFormKey)) {
@@ -235,7 +235,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             themeData: context.themeData.textTheme.headlineSmall!,
             fontWeight: 700,
             fontSize: MySize.size18,
-            color: AppColors.darkRoundedButtonColor,
+            // color: AppColors.darkRoundedButtonColor,
           ),
         ),
     );

@@ -99,3 +99,5 @@ enum PageTransitionType {
 }
 
 enum AuthStatus { initial, loading, authenticated, error }
+
+enum TransactionStatus { pending, sent, debited, failed }

@@ -7,6 +7,7 @@ import 'package:remittance/presentation/widgets/text_widget.dart';
 class InputTextFormField extends StatelessWidget {
   const InputTextFormField({super.key,this.controller,this.isBordered=false,
     this.hintText,
+    this.labelText,
     this.keyboardType,
     this.obscureText = false,
     this.isDescription = false,
@@ -25,6 +26,7 @@ class InputTextFormField extends StatelessWidget {
 
   final TextEditingController? controller;
   final String? hintText;
+  final String? labelText;
   final TextAlign textAlign;
   final Widget? suffixIcon;
   final Widget? prefixIcon;
@@ -67,6 +69,7 @@ class InputTextFormField extends StatelessWidget {
         hintText: hintText,
         suffixIcon:suffixIcon,
         prefixIcon: prefixIcon,
+        labelText:labelText ,
         hintStyle: TextWidgetText.textWidgetStyle(
             themeData: themeData.textTheme.headlineMedium!,
             fontWeight: 400,
