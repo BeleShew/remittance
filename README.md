@@ -141,5 +141,15 @@ riverpod	Centralized providers and state logic
     
     Improve input validation and error handling
 
+
+**🧑‍💻 Author**
+    Belachew
+    
+    Portfolio:- https://linktr.ee/BelachewSh
+    
+    GitHub:- https://github.com/BeleShew
+    
+    LinkedIn:- https://www.linkedin.com/in/bele-shewa/
+
 📄 **License**
 This project is licensed under the MIT License.
