@@ -5,7 +5,16 @@ import 'package:remittance/presentation/riverpod/user/userProvider.dart';
 
 final transactionDataProvider = FutureProvider<Map<String, dynamic>>((ref) async {
   final notifier = ref.read(authNotifierProvider.notifier);
-  final currentUserId = ref.read(authNotifierProvider).user?.id ?? "";
+  final currentUserId = ref.watch(authNotifierProvider.select((auth) => auth.user?.id ?? ""));
+
+  if (currentUserId.isEmpty) {
+    return {
+      "sent": [],
+      "received": [],
+      "users": {},
+      "hasData": false,
+    };
+  }
 
   final sent = await notifier.sendTransactions(currentUserId) ?? [];
   final received = await notifier.receivedTransactions(currentUserId) ?? [];
@@ -19,7 +28,10 @@ final transactionDataProvider = FutureProvider<Map<String, dynamic>>((ref) async
 
   final all = [...sent, ...received];
 
-  final userIds = all.map((tx) => tx.senderId == currentUserId ? tx.receiverId : tx.senderId).toSet().whereType<String>();
+  final userIds = all
+      .map((tx) => tx.senderId == currentUserId ? tx.receiverId : tx.senderId)
+      .toSet()
+      .whereType<String>();
 
   final users = await Future.wait(userIds.map((id) => notifier.getUserById(id)));
   final userMap = {

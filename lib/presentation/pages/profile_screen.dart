@@ -136,7 +136,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>{
                     titleColor: AppColors.blue,
                     onTap: (){
                       ref.invalidate(transactionDataProvider);
-                      ref.invalidate(authNotifierProvider);
+                      // ref.invalidate(authNotifierProvider);
                       context.router.replace(const LoginRoute());
                     },
                     trailing: const Icon(Icons.arrow_forward_ios_outlined,),

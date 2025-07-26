@@ -51,7 +51,7 @@ class _SendMoneyScreenState extends ConsumerState<SendMoneyScreen> {
         child: Column(
           children: [
             TextWidgetText.textWidget(
-              text: 'Current Balance: ${user?.balance?.toStringAsFixed(2)} ${user?.currency}',
+              text: 'Current Balance: ${user?.balance?.toStringAsFixed(2)} ${user?.currency?.toUpperCase()}',
               themeData: context.themeData.textTheme.displaySmall!,
               fontSize: MySize.size18,
               fontWeight: 500,
@@ -234,7 +234,7 @@ class _SendMoneyScreenState extends ConsumerState<SendMoneyScreen> {
         return;
       }
 
-      if (_currency != user?.currency) {
+      if (_currency.toUpperCase() != user?.currency?.toUpperCase()) {
         _showSnack("You have selected a different currency than your balance");
         EasyLoading.dismiss();
         return;

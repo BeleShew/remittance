@@ -209,21 +209,47 @@ import 'package:intl/intl.dart';
 
 class TransactionWidget extends ConsumerWidget {
   const TransactionWidget({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final transactionSnapshot = ref.watch(transactionDataProvider);
     return transactionSnapshot.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, st) => Text("Error: $e"),
+      error: (e, st) => Center(child: Text("Error: $e")),
       data: (data) {
-        final sent = data["sent"] as List<TransactionModel>;
-        final received = data["received"] as List<TransactionModel>;
-        final userMap = data["users"] as Map<String, RegisterUser>;
+        final sent = List<TransactionModel>.from(data["sent"] ?? []);
+        final received = List<TransactionModel>.from(data["received"] ?? []);
+
+        final dynamic rawUserMapDynamic = data["users"];
+        final Map<String, RegisterUser> userMap = {};
+
+        if (rawUserMapDynamic is Map) {
+          rawUserMapDynamic.forEach((key, value) {
+            if (key is String && value is RegisterUser) {
+              userMap[key] = value;
+            }
+          });
+        }
         final currentUserId = ref.watch(authNotifierProvider).user?.id ?? "";
-        final allTransactions = [...sent, ...received];
+
+        final allTransactions = [...sent, ...received]
+          ..removeWhere((tx) => tx.timestamp == null);
+
+        // Sort by date
         allTransactions.sort((a, b) => b.timestamp!.compareTo(a.timestamp!));
 
-        return allTransactions.isNotEmpty? Padding(
+        // Show fallback if no transactions
+        if (allTransactions.isEmpty) {
+          return Padding(
+            padding: EdgeInsets.all(16),
+            child: Center(
+              child: Container(
+              ),
+            ),
+          );
+        }
+
+        return Padding(
           padding: EdgeInsets.symmetric(
             horizontal: MySize.size14 ?? 14,
             vertical: MySize.size5 ?? 5,
@@ -232,7 +258,7 @@ class TransactionWidget extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Title Row
+              // Header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -258,16 +284,15 @@ class TransactionWidget extends ConsumerWidget {
               ),
               const SizedBox(height: 10),
 
-              // Transaction List
+              // Transactions
               ...allTransactions.map((tx) {
                 final isReceived = tx.receiverId == currentUserId;
                 final otherUserId = isReceived ? tx.senderId : tx.receiverId;
                 final userInfo = userMap[otherUserId ?? ""];
 
                 final amountPrefix = isReceived ? '+' : '-';
-                final amountColor = isReceived
-                    ? AppColors.greenColor
-                    : AppColors.lightPink;
+                final amountColor =
+                isReceived ? AppColors.greenColor : AppColors.lightPink;
                 final iconPath = isReceived
                     ? "assets/images/convert.png"
                     : "assets/images/send_money.png";
@@ -298,13 +323,15 @@ class TransactionWidget extends ConsumerWidget {
                               Container(
                                 decoration: BoxDecoration(
                                   color: AppColors.lightGrey,
-                                  borderRadius: BorderRadius.circular(
-                                      MySize.size30 ?? 30),
+                                  borderRadius:
+                                  BorderRadius.circular(MySize.size30 ?? 30),
                                 ),
                                 padding: EdgeInsets.all(MySize.size8 ?? 8),
                                 child: Image.asset(
-                                    iconPath, width: MySize.size20,
-                                    height: MySize.size20),
+                                  iconPath,
+                                  width: MySize.size20,
+                                  height: MySize.size20,
+                                ),
                               ),
                               SizedBox(width: MySize.size10 ?? 10),
                               Flexible(
@@ -322,8 +349,8 @@ class TransactionWidget extends ConsumerWidget {
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     TextWidgetText.textWidget(
-                                      text: DateFormat('hh:mm a, MMM d').format(
-                                          tx.timestamp!),
+                                      text: DateFormat('hh:mm a, MMM d')
+                                          .format(tx.timestamp!),
                                       themeData: context.themeData.textTheme
                                           .displaySmall!,
                                       fontSize: MySize.size8,
@@ -337,9 +364,10 @@ class TransactionWidget extends ConsumerWidget {
                           ),
                         ),
                         TextWidgetText.textWidget(
-                          text: "$amountPrefix \$${tx.amount?.toStringAsFixed(
-                              2) ?? '0.00'}",
-                          themeData: context.themeData.textTheme.displaySmall!,
+                          text:
+                          "$amountPrefix \$${tx.amount?.toStringAsFixed(2) ?? '0.00'}",
+                          themeData:
+                          context.themeData.textTheme.displaySmall!,
                           fontSize: MySize.size10,
                           fontWeight: 500,
                           color: amountColor,
@@ -352,7 +380,7 @@ class TransactionWidget extends ConsumerWidget {
               }),
             ],
           ),
-        ):Container();
+        );
       },
     );
   }
