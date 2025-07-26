@@ -130,8 +130,8 @@ String generateAccountNumber() {
             message: message,
             transitionType: transitionType,
             showCloseIcon: showCloseIcon,
-            backgroundColor: backgroundColor ?? Colors.black,
-            textColor: textColor ?? Colors.white,
+            backgroundColor: Theme.of(context).brightness == Brightness.dark? AppColors.black: AppColors.darkGrey,
+            textColor: Theme.of(context).brightness == Brightness.dark? AppColors.white: AppColors.black,
             onDismiss: removeOverlay,
           ),
         );

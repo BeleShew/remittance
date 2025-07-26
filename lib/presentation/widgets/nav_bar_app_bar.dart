@@ -29,7 +29,7 @@ class NavAppBarTitle extends StatelessWidget {
                   fontSize: MySize.size16,
                   fontWeight: 700,
                   textAlign: TextAlign.start,
-                  color:titleColor ?? AppColors.black,
+                  color:titleColor,
               ),
               SizedBox(height: MySize.size5,),
               TextWidgetText.textWidget(
@@ -38,7 +38,7 @@ class NavAppBarTitle extends StatelessWidget {
                   fontSize: MySize.size12,
                   fontWeight: 500,
                   textAlign: TextAlign.start,
-                  color:subTitleColor??AppColors.black,
+                  color:subTitleColor,
               ),
             ],
           ),

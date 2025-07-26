@@ -62,14 +62,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>{
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Spacer(),
-            const Icon(Icons.facebook),
+             Icon(Icons.facebook,color: Theme.of(context).brightness == Brightness.dark? AppColors.lightGrey: AppColors.darkGrey,),
             SizedBox(width: MySize.size14,),
-            const Icon(Icons.telegram),
+             Icon(Icons.telegram,color: Theme.of(context).brightness == Brightness.dark? AppColors.lightGrey: AppColors.darkGrey,),
             SizedBox(width: MySize.size14,),
-            const Icon(Icons.email),
+            Icon(Icons.email,color: Theme.of(context).brightness == Brightness.dark? AppColors.lightGrey: AppColors.darkGrey,),
             SizedBox(width: MySize.size14,),
-            // const Icon(Icons.chat_bubble),
-            // SizedBox(width: MySize.size20,),
           ],
         );
   }
@@ -86,6 +84,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>{
             Container(
               decoration: BoxDecoration(
                 color: AppColors.lightGrey.withOpacity(0.25),
+                // color: Theme.of(context).brightness == Brightness.dark? AppColors.lightGrey: AppColors.lightestGrey,
                 borderRadius: BorderRadius.circular(MySize.size20 ?? 0),
               ),
               child: Column(
@@ -203,7 +202,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>{
     return Center(
           child: Container(
             decoration: BoxDecoration(
-            color: AppColors.black,
+            // color: AppColors.black,
+            color: Theme.of(context).brightness == Brightness.dark? AppColors.black: AppColors.lightestGrey,
             shape: BoxShape.rectangle,
               borderRadius: BorderRadius.all(Radius.circular(MySize.size16??0))
           ),
@@ -215,7 +215,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>{
                 fontSize: MySize.size16,
                 fontWeight: 500,
                 textAlign: TextAlign.start,
-                color:AppColors.white,
+                color:Theme.of(context).brightness == Brightness.dark? AppColors.white: AppColors.black,
               ),
             ),
           ),
@@ -238,12 +238,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>{
   Widget _userName(String name) {
     return Center(
           child: TextWidgetText.textWidget(
-            text:name,
+            text:name.toUpperCase(),
             themeData: context.themeData.textTheme.displaySmall!,
             fontSize: MySize.size16,
             fontWeight: 700,
             textAlign: TextAlign.start,
-            color:AppColors.lightPrime,
+            // color:AppColors.lightPrime,
+            color:Theme.of(context).brightness == Brightness.dark? AppColors.lightPrime: AppColors.darkGrey,
           ),
         );
   }
@@ -251,7 +252,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>{
   Widget _profileImage() {
     return CircleAvatar(
       radius: MySize.size28,
-          backgroundColor: AppColors.white,
+          // backgroundColor: AppColors.white,
+          backgroundColor: Theme.of(context).brightness == Brightness.dark? AppColors.white: AppColors.lightestGrey,
           child: Icon(Icons.account_circle_outlined,
             size: MySize.size28,
             color: AppColors.primary,),

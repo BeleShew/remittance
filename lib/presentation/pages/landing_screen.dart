@@ -35,6 +35,7 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            SizedBox(height: MySize.size12),
             _getGreetingWidget(user),
             SizedBox(height: MySize.size12),
             _balanceWidget(user),
@@ -48,7 +49,7 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
 
   Widget _getGreetingWidget(LoginResponse? user) {
     return NavAppBarTitle(
-      title: "Selam, ${user?.name ?? "BelachewSh"}",
+      title: "Selam, ${user?.name ?? "BelachewSh"}".toUpperCase(),
       // titleColor: AppColors.white,
       // subTitleColor: AppColors.white,
       subTitle: getGreeting(),
